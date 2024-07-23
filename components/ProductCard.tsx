@@ -7,7 +7,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <View
       className="bg-white p-3 rounded-lg flex flex-row"
       style={{
-        shadowColor: "balck",
+        shadowColor: "black",
         shadowOffset: {
           width: 0,
           height: 5,
