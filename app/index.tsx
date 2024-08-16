@@ -1,45 +1,44 @@
+import ModalToggle from "@/components/Modal";
 import Task from "@/components/Task";
 import React, { useState } from "react";
-import { View, Text, Button, TextInput } from "react-native";
+import { View, Text, Pressable } from "react-native";
 
 export default function App() {
-  const [tasks, setTasks] = useState([
-    { details: "todo app", done: false },
-    { details: "read docs", done: false },
-  ]);
-
-  const [value, setValue] = useState("");
-
-  const addTask = (value: string) => {
-    setTasks((oldValue) => [...oldValue, { details: value, done: false }]);
-  };
-
-  const handelDone = (newValue: boolean, index: number) => {
-    setTasks((preTasks) => {
-      const temp = [...preTasks];
-      temp[index].done = newValue;
-      return temp;
-    });
-  };
-
+  const [isShown, setIsShown] = useState(false);
+  const [tasks, setTasks] = useState<string[]>([]);
+  function handleModalToggle() {
+    setIsShown(!isShown);
+  }
+  function handleDeleteTask(index: number) {
+    setTasks(tasks.filter((_, i) => i !== index));
+  }
+  function addTask(task: string) {
+    setTasks((prevTasks) => [...prevTasks, task]);
+  }
   return (
-    <View className="flex-1 p-10 items-center">
-      {tasks.map((task, index) => (
-        <Task
-          key={index}
-          task={task}
-          onDone={(value) => handelDone(value, index)}
-        />
-      ))}
+    <View className="flex-1 justify-center text-center">
+      {tasks.map((task, ix) => {
+        return (
+          <Task
+            task={task}
+            key={ix}
+            handleDeleteTask={() => handleDeleteTask(ix)}
+          />
+        );
+      })}
 
-      <View className="w-full gap-y-2">
-        <Text>New Task:</Text>
-        <TextInput
-          className="bg-white rounded border w-full"
-          onChangeText={setValue}
-        />
-        <Button title="add task" onPress={() => addTask(value)} />
-      </View>
+      <Pressable
+        onPress={handleModalToggle}
+        className="w-1/4 m-auto bg-blue-500 h-12 rounded-xl justify-center items-center"
+      >
+        <Text className=" text-lg text-white">Add Task</Text>
+      </Pressable>
+
+      <ModalToggle
+        isShown={isShown}
+        setIsShown={setIsShown}
+        addTask={addTask}
+      />
     </View>
   );
 }

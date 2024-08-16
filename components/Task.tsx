@@ -3,15 +3,11 @@ import { View, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/MaterialIcons";
 import CheckBox from "./Checkbox";
 type TaskPropsType = {
-  task: { details: string; done: boolean };
-  onDone: (value: boolean) => void;
+  task: string;
+  handleDeleteTask: () => void;
 };
 
-export default function Task({ task, onDone }: TaskPropsType) {
-  const handelChange = (value: boolean) => {
-    onDone(value);
-  };
-
+export default function Task({ task, handleDeleteTask }: TaskPropsType) {
   return (
     <View
       style={{
@@ -27,10 +23,9 @@ export default function Task({ task, onDone }: TaskPropsType) {
       className="flex-row justify-between items-center bg-white p-4 my-2 rounded-xl w-full"
     >
       <View className="flex-row ">
-        <CheckBox value={task.done} onChange={handelChange} />
-        <Text className="mx-2">{task.details}</Text>
+        <Text className="mx-2 text-black">{task}</Text>
       </View>
-      <Ionicons name="delete-outline" size={32} />
+      <Ionicons onPress={handleDeleteTask} name="delete-outline" size={32} />
     </View>
   );
 }
